@@ -1,0 +1,40 @@
+# instructions from arbitrum and the latest docker image can be found here 
+# https://developer.arbitrum.io/node-running/how-tos/running-a-full-node
+
+# Install docker on new Linux install
+sudo apt update \
+sudo apt install docker.io \
+sudo systemctl start docker \
+sudo systemctl enable docker
+
+# no need to pull latest docker image. it will be downloaded when you run
+# didn't have much luck downloading the nitro genesis snapshot either
+# the file will be downloaded when you start docker image
+
+# set up firewall
+sudo ufw allow 8547 \
+sudo ufw allow 9642 \
+sudo ufw allow 8548
+
+# set up data folder so docker can access it
+mkdir /mnt/data/arbitrum \
+chmod -fR 777 /mnt/data/arbitrum
+
+# run the docker image
+sudo docker run --rm -d -it -v /data/arbitrum:/home/user/.arbitrum offchainlabs/nitro-node:v2.1.3-e815395 \
+-p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 \
+--init.url=https://snapshot.arbitrum.foundation/arb1/nitro-pruned.tar --chain.id=42161 \
+--parent-chain.connection.url=http://192.168.1.69 \
+--http.api=net,web3,eth,debug --http.corsdomain=* \
+--http.addr=0.0.0.0 --http.vhosts=* --ws.port=8548 --ws.addr=0.0.0.0 --ws.origins=* \
+--node.staker.enable=FALSE
+# use the pruning flag if you need to prune, otherwise do not include it
+--init.prune=full
+
+# check docker container and logs
+sudo docker container ls \
+sudo docker logs -f --tail 100 <containerID_from above>
+
+# to shut down the docker image
+sudo docker stop --time=300 <containerID>
+
