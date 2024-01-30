@@ -21,7 +21,7 @@ mkdir /mnt/data/arbitrum \
 chmod -fR 777 /mnt/data/arbitrum
 
 # run the docker image
-sudo docker run --rm -d -it -v /data/arbitrum:/home/user/.arbitrum offchainlabs/nitro-node:v2.1.3-e815395 \
+sudo docker run --rm -d -it -v /data/arbitrum:/home/user/.arbitrum offchainlabs/nitro-node:v2.2.2-8f33fea \
 -p 0.0.0.0:8547:8547 -p 0.0.0.0:8548:8548 \
 --init.url=https://snapshot.arbitrum.foundation/arb1/nitro-pruned.tar --chain.id=42161 \
 --parent-chain.connection.url=http://192.168.1.69 \
